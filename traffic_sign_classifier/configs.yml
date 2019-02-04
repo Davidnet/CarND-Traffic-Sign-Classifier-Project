@@ -1,0 +1,8 @@
+train_params: 
+  buffer_size: 34799
+  batch_size: 16
+  epochs: 200
+  # learning_rate: 
+  
+model_dir: "/models/paper_densenet_normalized_augmented"
+  

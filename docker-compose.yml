@@ -8,6 +8,7 @@ services:
     volumes:
       - ./:/code
       - ./data:/data
+      - ./models:/models  
 
     working_dir: /code/notebooks
 
@@ -18,15 +19,15 @@ services:
 
 
   ipython-shell:
-    # image: jupyter/tensorflow-notebook
-    image: tensorflow/tensorflow:latest-gpu-py3
+    build: .
     runtime: nvidia
 
     volumes:
       - ./:/code
       - ./data:/data
+      - ./models:/models
 
-    working_dir: /code/superpixel_segmentation
+    working_dir: /code/traffic_sign_classifier
 
     ports:
       - 6006:6006
@@ -35,3 +36,22 @@ services:
     tty: true
 
     command: ipython --TerminalInteractiveShell.editing_mode=vi
+
+  train:
+    build: .
+    runtime: nvidia
+
+    volumes:
+      - ./:/code
+      - ./data:/data
+      - ./models:/models
+
+    working_dir: /code/traffic_sign_classifier
+
+    ports:
+      - 6006:6006
+
+    stdin_open: true
+    tty: true
+
+    command: python german_traffic_main_densenet.py

@@ -1,4 +1,6 @@
 models/
+models/
+notebooks/
 *.a
 data/
 # Byte-compiled / optimized / DLL files
