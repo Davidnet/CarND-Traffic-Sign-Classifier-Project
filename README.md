@@ -17,7 +17,7 @@ This notebook contains the explorations done to the provided German Traffic Data
 In this notebook we take our previously trained model in `/models` (Link to download pretrained models here: [model link](https://drive.google.com/open?id=1tXY47zHgXO9lQKqAExqjN8sfiGIZlOdL)
 ) and observe the validation score obtained in the validation dataset and make inference in both validation data and unexplored data.
 
-[Validation Exploration](./notebooks/validation_exploration.ipnb)
+[Validation Exploration](./notebooks/validation_exploration.ipynb)
 
 In this notebook we explore in which cases the model makes a mistake and compute again the validation score manually.
 
@@ -201,7 +201,7 @@ Also our loss seems to indicate that we could have gone with a better model and 
 
 As seen in our notebooks
 
-[Model Accuracy](./notebooks/model_accuracy.ipynb) and [Validation Exploration](./notebooks/validation_exploration.ipnb)
+[Model Accuracy](./notebooks/model_accuracy.ipynb) and [Validation Exploration](./notebooks/validation_exploration.ipynb)
 
 Using the validation set: 
 
@@ -209,7 +209,7 @@ Using the validation set:
 
 On a more manual observation we observe that, in the validation set we make a mistake often with images of the first class:.
 
-See [Validation Exploration](./notebooks/validation_exploration.ipnb)
+See [Validation Exploration](./notebooks/validation_exploration.ipynb)
 
 ### Test a Model on New Images
 

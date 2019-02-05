@@ -1,0 +1,217 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="Content-Style-Type" content="text/css" />
+  <meta name="generator" content="pandoc" />
+  <title></title>
+  <style type="text/css">code{white-space: pre;}</style>
+  <style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+  </style>
+</head>
+<body>
+<h1 id="german-traffic-sign-classifier.">German Traffic Sign Classifier.</h1>
+<p>In this repository we try to solve the problem of training a deep learning model to learn representations to figure out classify german traffic signs.</p>
+<p>Most of the discussion done here can be obtained at a glance on the following:</p>
+<p><a href="./notebooks">Jupyter Notebooks</a></p>
+<p>It is important to to observe the following notebooks:</p>
+<p><a href="./notebooks/data_exploration.ipynb">Data Exploration</a></p>
+<p>This notebook contains the explorations done to the provided German Traffic Dataset provided by Udacity, we also use the notebook to explore how to use the <code>tf.data</code> API.</p>
+<p><a href="./notebooks/model_accuracy.ipynb">Model Accuracy</a></p>
+<p>In this notebook we take our previously trained model in <code>/models</code> (Link to download pretrained models here: <a href="https://drive.google.com/open?id=1tXY47zHgXO9lQKqAExqjN8sfiGIZlOdL">model link</a> ) and observe the validation score obtained in the validation dataset and make inference in both validation data and unexplored data.</p>
+<p><a href="./notebooks/validation_exploration.ipynb">Validation Exploration</a></p>
+<p>In this notebook we explore in which cases the model makes a mistake and compute again the validation score manually.</p>
+<h2 id="training-and-data-pipelines-using-tf.estimator-and-tf.data">Training and Data Pipelines using tf.estimator and tf.data</h2>
+<p>You should a <code>data</code> folder that contains:</p>
+<ul>
+<li><code>test.p</code></li>
+<li><code>train.p</code></li>
+<li><code>valid.p</code></li>
+</ul>
+<p>This repository consists of a <code>Dockerfile</code> and <code>docker-compose.yml</code> that contains all the dependencies and services for notebook visualization and training.</p>
+<p>Do not forget to build the services for the first time:</p>
+<p>(all the commands have root directory in the root of the repository)</p>
+<pre><code>$ docker-compose build</code></pre>
+<h3 id="notebook-service-for-data-exploration-and-model-validation">Notebook service for data exploration and model validation</h3>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="ex">docker-compose</span> up notebook</code></pre></div>
+<h3 id="notebook-for-training">Notebook for training:</h3>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="ex">docker-compose</span> up train</code></pre></div>
+<h3 id="interactive-ipython-shell-service">Interactive ipython-shell service</h3>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="ex">docker-compose</span> up ipython-shell</code></pre></div>
+<p>All the code for training and testing is contained in a package called <a href="./traffic_sign_classifier">traffic_sign_classifier</a></p>
+<p>The tree structure of the module consists of:</p>
+<p><a href="./traffic_sign_classifier/german_traffic_dataset.py">german_traffic_dataset.py</a>: Which is the module that contains the data pipelines and data augmentation</p>
+<p><a href="./traffic_sign_classifier/german_traffic_densenet.py">german_traffic_densenet.py</a>: Which is the module that contains the model function for the densenet architecure and their parameters.</p>
+<p><a href="./traffic_sign_classifier/german_traffic_main_densenet.py">german_traffic_main_densenet.py</a>: Module that contains the main loop for training.</p>
+<p><a href="./traffic_sign_classifier/configs.yml">configs.yml</a> Config file that contains the main hyperparameters for training. They can be overrided by command line arguments. But is preferable to use just modify the configs.yml</p>
+<p>After training or you can download the models from here:</p>
+<p><a href="https://drive.google.com/open?id=1tXY47zHgXO9lQKqAExqjN8sfiGIZlOdL">model link</a></p>
+<p>The structure should have a folder model and a data folder such as:</p>
+<div class="figure">
+<img src="./resources/tree.png" alt="folder structure" />
+<p class="caption">folder structure</p>
+</div>
+<h2 id="dataset-exploration">Dataset Exploration</h2>
+<p>Before deciding the architecture we make a exploration of the dataset.</p>
+<p>As we can see:</p>
+<div class="figure">
+<img src="./resources/data_exploration_1.png" alt="data exploration" />
+<p class="caption">data exploration</p>
+</div>
+<p>Our training dataset consists of 347999 elements for training, is a good dataset, but:</p>
+<div class="figure">
+<img src="./resources/data_exploration_2.png" alt="data imbalance" />
+<p class="caption">data imbalance</p>
+</div>
+<p>it is completly imbalanced so this suggest in adding data augmentation on our data pipelines. This is done in lines 17 to 31 in <code>german_traffic_dataset.py</code></p>
+<div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python"><span class="kw">def</span> train_preprocess(image, label):
+
+    <span class="cf">if</span> label <span class="kw">in</span> [<span class="dv">11</span>, <span class="dv">12</span>, <span class="dv">13</span>, <span class="dv">15</span>, <span class="dv">17</span>, <span class="dv">18</span>, <span class="dv">22</span>, <span class="dv">26</span>, <span class="dv">30</span>, <span class="dv">35</span>]:
+            image <span class="op">=</span> tf.image.random_flip_left_right(image)
+
+    <span class="cf">if</span> label <span class="kw">in</span> [<span class="dv">1</span>, <span class="dv">5</span>, <span class="dv">12</span>, <span class="dv">15</span>, <span class="dv">17</span>]:
+        image <span class="op">=</span> tf.image.random_flip_up_down(image)
+
+    image <span class="op">=</span> tf.image.random_brightness(image, max_delta<span class="op">=</span><span class="fl">32.0</span> <span class="op">/</span> <span class="fl">255.0</span>)
+    image <span class="op">=</span> tf.image.random_saturation(image, lower<span class="op">=</span><span class="fl">0.5</span>, upper<span class="op">=</span><span class="fl">1.5</span>)
+
+    <span class="co"># Make sure the image is still in [0, 1]</span>
+    image <span class="op">=</span> tf.clip_by_value(image, <span class="fl">0.0</span>, <span class="fl">1.0</span>)
+
+    <span class="cf">return</span> image, label</code></pre></div>
+<p>We artifically make some random augmentations in certain classes.</p>
+<p>The visualization is done in :</p>
+<p><a href="./notebooks/data_exploration.ipynb">Data Exploration notebook</a></p>
+<h3 id="design-and-test-a-model-architecture">Design and test a model Architecture</h3>
+<p>The preprocessing stages and the data augmentation are in the german_traffic_dataset.py the preprocessing consists of:</p>
+<ul>
+<li>Reading the pickle file</li>
+<li>Converting our data into the dataset API Lines:</li>
+</ul>
+<div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python"><span class="kw">def</span> input_fn(images, labels, params, training):
+    
+    ds <span class="op">=</span> tf.data.Dataset.from_tensor_slices((
+        images,
+        labels,
+    ))
+
+    ds <span class="op">=</span> ds.<span class="bu">map</span>(parse_function, num_parallel_calls<span class="op">=</span><span class="dv">4</span>)
+    
+    <span class="cf">if</span> training:
+        ds <span class="op">=</span> ds.<span class="bu">map</span>(train_preprocess, num_parallel_calls<span class="op">=</span><span class="dv">4</span>)
+        ds <span class="op">=</span> ds.<span class="bu">apply</span>(tf.data.experimental.shuffle_and_repeat( 
+        buffer_size <span class="op">=</span> params.buffer_size,
+        count <span class="op">=</span> params.epochs,
+        ))
+        
+    <span class="co">#ds  ds.map(lambda x, y: ({&quot;images&quot;: x}, y))</span>
+
+    <span class="co"># ds = ds.map(lambda x, y: (tf.cast(x, tf.float32), tf.cast(y, tf.int32)))</span>
+        
+    ds <span class="op">=</span> ds.batch(params.batch_size, drop_remainder<span class="op">=</span><span class="va">True</span>)
+    ds <span class="op">=</span> ds.prefetch(buffer_size<span class="op">=</span><span class="dv">2</span>)
+
+    
+    <span class="cf">return</span> ds</code></pre></div>
+<ul>
+<li>Perform some random augmentation (see above)</li>
+</ul>
+<p>Now that we have our dataset input_fn and trainig data as a <code>tf.data.Dataset</code></p>
+<p>we can iterate over our model architecture.</p>
+<h3 id="model-architecture">Model Architecture</h3>
+<p>We decide for this problem implement the DenseNet architecture:</p>
+<div class="figure">
+<img src="https://cdn-images-1.medium.com/max/2000/1*SSn5H14SKhhaZZ5XYWN3Cg.jpeg" alt="Densenet" />
+<p class="caption">Densenet</p>
+</div>
+<p>Using tensorboard we can see the graph representation of the DenseNet class definded in <a href="./traffic_sign_classifier/german_traffic_densenet.py">german_traffic_densenet.py</a>:</p>
+<div class="figure">
+<img src="./resources/densenet_1.png" alt="Densenet implemenation" />
+<p class="caption">Densenet implemenation</p>
+</div>
+<p>We follow the paper closely by defining the blocks:</p>
+<div class="figure">
+<img src="./resources/densenet_2.png" alt="Densenet implemenation" />
+<p class="caption">Densenet implemenation</p>
+</div>
+<p>In a more high level we follow:</p>
+<div class="figure">
+<img src="https://cdn-images-1.medium.com/max/600/1*GeK21UAbk4lEnNHhW_dgQA.png" alt="Densenet Architecture" />
+<p class="caption">Densenet Architecture</p>
+</div>
+<h3 id="model-training">Model Training:</h3>
+<p>We use <code>tf.AdamOptimizer(0.0001)</code> with a initial learning rate of 0.0001. We trained for 300 epochs. And resulting in the following loss graphs:</p>
+<div class="figure">
+<img src="./resources/training_1.png" alt="training acurracy" />
+<p class="caption">training acurracy</p>
+</div>
+<p>We observe that we achive a 96% training and a 95% accuracy on the train and eval datasets respectively.</p>
+<p>Also our loss seems to indicate that we could have gone with a better model and more accuracy if we had trained for more steps:</p>
+<div class="figure">
+<img src="./resources/training_2.png" alt="training loss" />
+<p class="caption">training loss</p>
+</div>
+<h3 id="solution-approach.">Solution Approach.</h3>
+<p>As seen in our notebooks</p>
+<p><a href="./notebooks/model_accuracy.ipynb">Model Accuracy</a> and <a href="./notebooks/validation_exploration.ipynb">Validation Exploration</a></p>
+<p>Using the validation set:</p>
+<div class="figure">
+<img src="./resources/Accuracy_1.png" alt="ACU" />
+<p class="caption">ACU</p>
+</div>
+<p>On a more manual observation we observe that, in the validation set we make a mistake often with images of the first class:.</p>
+<p>See <a href="./notebooks/validation_exploration.ipynb">Validation Exploration</a></p>
+<h3 id="test-a-model-on-new-images">Test a Model on New Images</h3>
+<p>We made inference on new images that are located in the <a href="./test_images">folder test_images</a></p>
+<p>We make inference on <strong>validation images</strong> that were never seen either in evaluation or training, and <strong>web images</strong>.</p>
+<p>More info in the Jupyter Notebook <a href="./notebooks/model_accuracy.ipynb">Model Accuracy</a></p>
+<p><strong>Validation images</strong></p>
+<div class="figure">
+<img src="./resources/validation_1.png" alt="Accuraccy on Validation" />
+<p class="caption">Accuraccy on Validation</p>
+</div>
+<p>We see that we make two mistakes, which I think is pretty good.</p>
+<p><strong>External Web Images</strong></p>
+<p>Now we take external images from the web and make inference.</p>
+<div class="figure">
+<img src="./resources/results.png" alt="resources" />
+<p class="caption">resources</p>
+</div>
+<p>So we see that in the case that we make one mistake, the network have a certain distribution to the correct class I think that we should let train the model for a few more epochs.</p>
+</body>
+</html>
