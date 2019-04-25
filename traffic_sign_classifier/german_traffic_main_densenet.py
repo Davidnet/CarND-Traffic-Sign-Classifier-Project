@@ -26,9 +26,14 @@ def main(train_params, model_dir):
     with open("/data/test.p", "rb") as fd:
         test = pickle.load(fd)
 
+    # Support for CuDNN fail to allocate enough memory
+    config = tf.ConfigProto()
+    config.gpu_options.allow_growth = True
+    trainingConfig = tf.estimator.RunConfig(session_config=config)
+
     eval_input_fn = lambda : input_fn(test['features'], test['labels'].astype(np.int32), params, training=False)
    
-    classifier = tf.estimator.Estimator(model_fn, model_dir=model_dir)
+    classifier = tf.estimator.Estimator(model_fn, model_dir=model_dir, config=trainingConfig)
 
     train_spec = tf.estimator.TrainSpec(input_fn=train_input_fn)
     eval_spec = tf.estimator.EvalSpec(input_fn=eval_input_fn)
