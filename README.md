@@ -29,6 +29,14 @@ You should a `data` folder that contains:
 * `train.p`
 * `valid.p`
 
+It is easy to get the data in the following way:
+
+(Make sure you have the following binaries `curl` and `unzip`)
+
+```
+$ bash scripts/get-data.sh
+```
+
 
 This repository consists of a `Dockerfile` and `docker-compose.yml` that contains all the dependencies and services for notebook visualization and training.
 
